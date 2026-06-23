@@ -66,23 +66,14 @@ Hubungan antar entitas didefinisikan melalui relasi (Edge) berbobot dan berprope
 Diagram di bawah ini menggambarkan arsitektur hubungan data secara menyeluruh:
 
 ```mermaid
-graph TD
-    Location((Location))
-    Customer((Customer))
-    Purchase((Purchase))
-    Product((Product))
-    Review((Review))
-    ChatSession((ChatSession))
-    Intent((Intent))
-    Segment((Segment))
-
-    Customer -->|LIVES_IN| Location
-    Customer -->|MADE_PURCHASE| Purchase
-    Purchase -->|PURCHASED_PRODUCT| Product
-    Customer -->|BROWSED| Product
-    Customer -->|WROTE_REVIEW| Review
-    Review -->|REVIEW_ABOUT| Product
-    Customer -->|HAD_CHAT| ChatSession
-    ChatSession -->|EXPRESSED_INTENT| Intent
-    Customer -->|BELONGS_TO_SEGMENT| Segment
-    Customer <-->|SIMILAR_TO <br>[ML-Derived]| Customer
+(Location) <─[LIVES_IN]── (Customer) ──[MADE_PURCHASE]──> (Purchase) ──[PURCHASED_PRODUCT]──> (Product)
+                              │                                                                      ▲
+                              ├──[BROWSED]───────────────────────────────────────────────────────────┤
+                              │                                                                      │
+                              ├──[WROTE_REVIEW]──> (Review) ──[REVIEW_ABOUT]────────────────────────┘
+                              │
+                              ├──[HAD_CHAT]──> (ChatSession) ──[EXPRESSED_INTENT]──> (Intent)
+                              │
+                              ├──[BELONGS_TO_SEGMENT]──> (Segment)
+                              │
+                              └──[SIMILAR_TO]──> (Customer)  [ML-derived]
